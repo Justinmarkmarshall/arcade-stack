@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"supermario","Source":"./modules/game","Dir":"modules/game"},{"Key":"tetris","Source":"./modules/game","Dir":"modules/game"}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"games","Source":"./modules/game","Dir":"modules/game"},{"Key":"supermario","Source":"./modules/game","Dir":"modules/game"},{"Key":"tetris","Source":"./modules/game","Dir":"modules/game"}]}

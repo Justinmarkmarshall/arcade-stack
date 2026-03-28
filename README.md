@@ -25,6 +25,14 @@ docker_image.launcher        → docker_container.launcher
 docker_image.game            → docker_container.game
 docker_volume.arcade_data    → (used by future services)
 ```
+Now with the docker_network
+
+```
+docker_network.arcade -> docker_container.launcher
+docker_network.arcade -> module.games["tetris"].docker_container.this
+docker_network.arcade -> module.games["mario"].docker_container.this
+```
+
 
 ---
 
@@ -43,6 +51,35 @@ This separation of concerns allows you to:
 - Customize ports, images, and names via variables
 - Easily extend with new services
 - Maintain clean, readable code
+
+---
+
+## 🎮 Dynamic Game Deployment with Foreach
+
+This configuration leverages Terraform's `for_each` meta-argument to dynamically deploy multiple game containers using a reusable module. The `local.games` map defines each game's configuration, allowing easy addition of new games without duplicating code.
+
+- **Module Reuse**: The `modules/game` module serves as a template for all game containers, ensuring consistency.
+- **Scalability**: Adding a new game requires only updating the `local.games` map in `main.tf`.
+- **Maintainability**: Changes to the game container logic are centralized in the module.
+
+This approach demonstrates Terraform's power in managing infrastructure as code with loops and modules.
+
+---
+
+## 🌐 Docker Networking
+
+This configuration creates a custom Docker network named `arcade-network` to enable secure inter-container communication. All game containers and the launcher are attached to this network, allowing them to communicate with each other using container names instead of IP addresses.
+
+- **Isolation**: Containers on the custom network are isolated from the host's default bridge network, improving security.
+- **Service Discovery**: Containers can reach each other via their names (e.g., `tetris`, `supermario`, `launcher`), simplifying internal networking.
+- **Scalability**: As more services are added, they can easily join the same network for seamless integration.
+
+The Portainer container remains on the default network to access the Docker socket for management purposes.
+
+```docker network inspect arcade-network```
+
+Shows that the 2 games are deployed inside the network, they form the application plane.
+Portainer remains on then management plane.
 
 ---
 

@@ -25,3 +25,9 @@ variable "restart_policy" {
   type        = string
   default     = "unless-stopped"
 }
+
+variable "network_name" {
+  description = "Docker network to connect to"
+  type        = string
+  default     = "arcade-network"
+}
