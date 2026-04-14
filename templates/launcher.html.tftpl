@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Arcade</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      display: inline-block;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+    }
+    a {
+      color: #7cc7ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Home Arcade</h1>
+  <div class="grid">
+    %{ for game_name, game in games ~}
+    <div class="card">
+      <h2>${game.title}</h2>
+      <p>${game.description}</p>
+      <p><a href="http://localhost:${game.external_port}" target="_blank">Play ${game.title}</a></p>
+    </div>
+    %{ endfor ~}
+    <div class="card">
+      <h2>Portainer</h2>
+      <p>Inspect containers, images, volumes and networks.</p>
+      <p><a href="http://localhost:${portainer_port}" target="_blank">Open Portainer</a></p>
+    </div>
+  </div>
+</body>
+</html>

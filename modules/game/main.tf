@@ -18,4 +18,6 @@ resource "docker_container" "this" {
     internal = var.internal_port
     external = var.external_port
   }
+
+  restart = "unless-stopped"
 }

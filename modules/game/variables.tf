@@ -1,5 +1,5 @@
 # modules/game/variables.tf
-# template for all variables
+# only knows about a single game
 variable "name" {
   description = "Container name"
   type        = string

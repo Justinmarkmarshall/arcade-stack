@@ -1,3 +1,5 @@
+# class and type definitions
+
 variable "launcher_name" {
     type        = string
     default     = "arcade-launcher"
@@ -11,36 +13,6 @@ variable "launcher_port" {
 variable "launcher_image" {
     type        = string
     default     = "nginx:latest"
-}
-
-variable "tetris_name" {
-    type        = string
-    default     = "arcade-tetris"
-}
-
-variable "tetris_port" {
-    type        = number
-    default     = 3001
-}
-
-variable "tetris_image" {
-    type        = string
-    default     = "bsord/tetris"
-}
-
-variable "supermario_name" {
-    type        = string
-    default     = "arcade-supermario"
-}
-
-variable "supermario_port" {
-    type        = number
-    default     = 3002
-}
-
-variable "supermario_image" {
-    type        = string
-    default     = "pengbai/docker-supermario"
 }
 
 variable "portainer_name" {
@@ -61,4 +33,15 @@ variable "portainer_image" {
 variable "portainer_volume_name" {
     type        = string
     default     = "portainer_data"
+}
+
+variable "games" {
+  description = "Game container definitions"
+  type = map(object({
+    image         = string
+    external_port = number
+    internal_port = number
+    title         = string
+    description   = string
+  }))
 }
