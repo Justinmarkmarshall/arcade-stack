@@ -1,33 +1,33 @@
 # class and type definitions
 
 variable "launcher_name" {
-    type        = string
-    default     = "arcade-launcher"
+  type    = string
+  default = "arcade-launcher"
 }
 
 variable "launcher_port" {
-    type        = number
-    default     = 8080
+  type    = number
+  default = 8080
 }
 
 variable "launcher_image" {
-    type        = string
-    default     = "nginx:latest"
+  type    = string
+  default = "nginx:latest"
 }
 
 variable "portainer_name" {
-    type        = string
-    default     = "arcade-portainer"
+  type    = string
+  default = "arcade-portainer"
 }
 
 variable "portainer_port" {
-    type        = number
-    default     = 9000
+  type    = number
+  default = 9000
 }
 
 variable "portainer_image" {
-    type        = string
-    default     = "portainer/portainer-ce:latest"
+  type    = string
+  default = "portainer/portainer-ce:latest"
 }
 
 variable "portainer_volume_name" {

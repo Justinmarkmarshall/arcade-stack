@@ -19,5 +19,9 @@ resource "docker_container" "this" {
     external = var.external_port
   }
 
-  restart = "unless-stopped"
+  networks_advanced {
+    name = var.network_name
+  }
+
+  restart = var.restart_policy
 }

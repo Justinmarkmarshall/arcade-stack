@@ -18,9 +18,5 @@ terraform.rc
 # Terraform plan output
 *.tfplan
 
-# Sensitive tfvars files
-*.tfvars
-*.tfvars.json
-
 # Exclude Terraform dependency lock file (optional, if not tracked)
 .terraform.lock.hcl'
