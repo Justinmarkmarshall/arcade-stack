@@ -21,9 +21,5 @@ terraform.rc
 # Terraform plan output
 *.tfplan
 
-# Exclude Terraform dependency lock file (optional, if not tracked)
-.terraform.lock.hcl
-.terraform.tfvars
-
 # Ignore Terraform variables file
 terraform.tfvars
