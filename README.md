@@ -109,7 +109,116 @@ That's it. Your arcade is live.
 
 ---
 
-## 🔍 Drift Detection — The Cool Bit
+## � Repository Layout
+
+```
+.
+├── main.tf
+├── providers.tf
+├── versions.tf
+├── variables.tf
+├── outputs.tf
+├── README.md
+├── terraform.tfvars
+├── .github/
+│   └── workflows/
+│       └── terraform-validate.yml
+└── modules/
+    └── game/
+        ├── main.tf
+        ├── outputs.tf
+        ├── variables.tf
+        └── versions.tf
+```
+
+## 🧠 Architecture
+
+```
+[Host Docker]
+    |
+    +-- [docker_network: arcade-network]
+    |       +-- launcher
+    |       +-- module.games["tetris"].docker_container.this
+    |       +-- module.games["supermario"].docker_container.this
+    |
+    +-- [docker socket]
+            +-- portainer
+```
+
+- The root stack deploys the launcher and Portainer plus a reusable game module.
+- The `modules/game` module is the reusable building block for game containers.
+- Portainer is on the Docker socket management plane, while the launcher/games are on the arcade application plane.
+
+## ⚙️ Inputs
+
+This repo uses the following Terraform inputs from `variables.tf`:
+
+- `launcher_name`: Container name for the launcher
+- `launcher_port`: External port for the launcher UI
+- `launcher_image`: Docker image for the launcher
+- `portainer_name`: Container name for Portainer
+- `portainer_port`: External port for Portainer
+- `portainer_image`: Docker image for Portainer
+- `portainer_volume_name`: Volume name for Portainer data
+- `games`: Map of game definitions
+
+The default values and sample game definitions are in `terraform.tfvars`.
+
+## 📤 Outputs
+
+Current outputs exposed by the root module:
+
+- `launcher_url`: URL for the arcade launcher
+- `portainer_url`: URL for the Portainer UI
+
+## ➕ How to add a new game
+
+1. Open `terraform.tfvars`.
+2. Add a new entry under the `games` map.
+3. Provide the required fields:
+   - `name`
+   - `image`
+   - `external_port`
+   - `internal_port`
+   - `title`
+   - `description`
+4. Run:
+
+```bash
+terraform init
+terraform apply
+```
+
+This will create a new game container using the reusable `modules/game` module.
+
+## ⚠️ Known limitations
+
+- This is a demo/local setup, not a production-grade platform.
+- State is stored locally in `terraform.tfstate`.
+- Portainer is configured to mount the host Docker socket, which is convenient for demos but not secure for production.
+- There is no remote backend configured, so state is not shared across machines.
+- The game launcher and games are only exposed on localhost by default.
+
+## ❓ Why Terraform instead of docker-compose?
+
+This repo is designed to demonstrate infrastructure-as-code concepts, not just container orchestration.
+
+- Terraform brings modularity with reusable modules.
+- It supports declarative resource graphs and drift detection.
+- It keeps container setup versioned alongside infrastructure configuration.
+- It shows how infrastructure can be managed with variables, outputs, and reusable modules rather than a static compose file.
+
+## 🗃️ State strategy
+
+This is a local-state demo. Terraform state is stored locally in `terraform.tfstate` by default.
+
+- Good for experimentation and learning.
+- Not meant for shared or collaborative environments.
+- If you want to move to a team-ready setup, add a remote backend such as S3, Azure Storage, or Terraform Cloud.
+
+---
+
+## �🔍 Drift Detection — The Cool Bit
 
 Terraform's drift detection ensures your infrastructure stays in sync with your configuration.
 

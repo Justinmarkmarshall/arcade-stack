@@ -21,8 +21,15 @@ jobs:
         with:
           terraform_version: '~> 1.5.0'
 
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
+        continue-on-error: false
+
+      - name: TFLint
+        run: tflint --recursive
         continue-on-error: false
 
       - name: Terraform Init
