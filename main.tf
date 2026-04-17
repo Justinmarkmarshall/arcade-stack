@@ -15,6 +15,13 @@ locals {
     games          = var.games
     portainer_port = var.portainer_port
   })
+
+  healthcheck_defaults = {
+    interval     = "30s"
+    timeout      = "5s"
+    retries      = 3
+    start_period = "10s"
+  }
 }
 
 resource "docker_container" "launcher" {
@@ -29,6 +36,14 @@ resource "docker_container" "launcher" {
   upload {
     file    = "/usr/share/nginx/html/index.html"
     content = local.launcher_html
+  }
+
+  healthcheck {
+    test         = ["CMD-SHELL", "test -f /usr/share/nginx/html/index.html"]
+    interval     = local.healthcheck_defaults.interval
+    timeout      = local.healthcheck_defaults.timeout
+    retries      = local.healthcheck_defaults.retries
+    start_period = local.healthcheck_defaults.start_period
   }
 
   restart = "unless-stopped"
@@ -59,11 +74,19 @@ resource "docker_container" "portainer" {
     container_path = "/data"
   }
 
-  #Linux socket path to create the mount
+  # Linux socket path to create the mount
   # this works fine on RD configured to use Dockerd (Moby)
   volumes {
     host_path      = "/var/run/docker.sock"
     container_path = "/var/run/docker.sock"
+  }
+
+  healthcheck {
+    test         = ["CMD-SHELL", "test -S /var/run/docker.sock"]
+    interval     = local.healthcheck_defaults.interval
+    timeout      = local.healthcheck_defaults.timeout
+    retries      = local.healthcheck_defaults.retries
+    start_period = local.healthcheck_defaults.start_period
   }
 
   restart = "unless-stopped"
