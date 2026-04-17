@@ -31,8 +31,8 @@ variable "portainer_image" {
 }
 
 variable "portainer_volume_name" {
-    type        = string
-    default     = "portainer_data"
+  type    = string
+  default = "portainer_data"
 }
 
 variable "games" {
