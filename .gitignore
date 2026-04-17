@@ -2,6 +2,9 @@
 *.tfstate
 *.tfstate.backup
 
+# Terraform directory
+.terraform/
+
 # Crash logs
 crash.log
 
