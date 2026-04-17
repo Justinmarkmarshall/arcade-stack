@@ -31,6 +31,14 @@ resource "docker_container" "launcher" {
     content = local.launcher_html
   }
 
+  healthcheck {
+    test         = ["CMD-SHELL", "test -f /usr/share/nginx/html/index.html"]
+    interval     = "30s"
+    timeout      = "5s"
+    retries      = 3
+    start_period = "10s"
+  }
+
   restart = "unless-stopped"
 }
 
@@ -59,11 +67,19 @@ resource "docker_container" "portainer" {
     container_path = "/data"
   }
 
-  #Linux socket path to create the mount
+  # Linux socket path to create the mount
   # this works fine on RD configured to use Dockerd (Moby)
   volumes {
     host_path      = "/var/run/docker.sock"
     container_path = "/var/run/docker.sock"
+  }
+
+  healthcheck {
+    test         = ["CMD-SHELL", "test -S /var/run/docker.sock"]
+    interval     = "30s"
+    timeout      = "5s"
+    retries      = 3
+    start_period = "10s"
   }
 
   restart = "unless-stopped"
