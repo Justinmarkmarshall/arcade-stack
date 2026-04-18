@@ -10,6 +10,10 @@ resource "docker_volume" "portainer_data" {
   name = var.portainer_volume_name
 }
 
+resource "docker_network" "arcade_network" {
+  name = "arcade-network"
+}
+
 locals {
   launcher_html = templatefile("${path.module}/templates/launcher.html.tftpl", {
     games          = var.games
