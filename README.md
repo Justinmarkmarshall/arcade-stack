@@ -1,5 +1,7 @@
 # 🕹️ Mini Arcade — Infrastructure as Fun
 
+![Architecture Diagram](docs/Arcade-Stack.png)
+
 > Declarative retro gaming, powered by Terraform and Docker.
 
 Spin up a fully containerised arcade cabinet with a single `terraform apply`.

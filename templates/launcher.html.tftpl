@@ -5,55 +5,377 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Arcade</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0f1f;
+      --panel: rgba(10, 18, 35, 0.88);
+      --panel-strong: rgba(15, 24, 48, 0.95);
+      --accent: #4fd1c5;
+      --accent-2: #f6ad55;
+      --text: #edf2f7;
+      --muted: #a0aec0;
+      --danger: #fc8181;
+      --border: rgba(255, 255, 255, 0.09);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #eee;
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(79, 209, 197, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(246, 173, 85, 0.14), transparent 25%),
+        linear-gradient(180deg, #030712 0%, #0b1120 100%);
+      color: var(--text);
+      padding: 32px 20px 48px;
+    }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero {
       text-align: center;
-      padding: 40px;
+      margin-bottom: 28px;
     }
-    h1 {
-      margin-bottom: 30px;
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
     }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 760px;
+      margin: 14px auto 0;
+      line-height: 1.6;
+    }
+
     .grid {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .card,
+    .leaderboard-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .card h2,
+    .leaderboard-panel h2,
+    .leaderboard-panel h3 {
+      margin-top: 0;
+    }
+
+    .card p,
+    .leaderboard-panel p,
+    .leaderboard-panel label,
+    .leaderboard-panel li,
+    .leaderboard-panel small {
+      color: var(--muted);
+    }
+
+    .card a,
+    button {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+    }
+
+    .card a,
+    button[type="submit"] {
+      background: linear-gradient(135deg, var(--accent), #63b3ed);
+      color: #04111d;
+      border: none;
+    }
+
+    .card a:hover,
+    button[type="submit"]:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .leaderboard-panel {
+      display: grid;
+      grid-template-columns: minmax(280px, 380px) minmax(280px, 1fr);
+      gap: 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(79, 209, 197, 0.7);
+      box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.12);
+    }
+
+    .status {
+      min-height: 24px;
+      font-size: 0.95rem;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.success {
+      color: var(--accent);
+    }
+
+    .score-list {
+      list-style: none;
+      margin: 16px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-item {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .rank {
+      color: var(--accent-2);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .player {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .score {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
       flex-wrap: wrap;
     }
-    .card {
-      display: inline-block;
-      background: #1e1e1e;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 20px;
-      width: 280px;
-    }
-    a {
-      color: #7cc7ff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    a:hover {
-      text-decoration: underline;
+
+    @media (max-width: 860px) {
+      .leaderboard-panel {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🎮 Home Arcade</h1>
-  <div class="grid">
-    %{ for game_name, game in games ~}
-    <div class="card">
-      <h2>${game.title}</h2>
-      <p>${game.description}</p>
-      <p><a href="http://localhost:${game.external_port}" target="_blank">Play ${game.title}</a></p>
-    </div>
-    %{ endfor ~}
-    <div class="card">
-      <h2>Portainer</h2>
-      <p>Inspect containers, images, volumes and networks.</p>
-      <p><a href="http://localhost:${portainer_port}" target="_blank">Open Portainer</a></p>
-    </div>
+  <div class="shell">
+    <section class="hero">
+      <h1>Home Arcade</h1>
+      <p>Choose your game, then post your best run to the shared leaderboard without leaving the arcade.</p>
+    </section>
+
+    <section class="grid">
+      %{ for game_name, game in games ~}
+      <article class="card">
+        <h2>${game.title}</h2>
+        <p>${game.description}</p>
+        <p><a href="http://localhost:${game.external_port}" target="_blank" rel="noreferrer">Play ${game.title}</a></p>
+      </article>
+      %{ endfor ~}
+      <article class="card">
+        <h2>Portainer</h2>
+        <p>Inspect containers, images, volumes and networks.</p>
+        <p><a href="http://localhost:${portainer_port}" target="_blank" rel="noreferrer">Open Portainer</a></p>
+      </article>
+    </section>
+
+    <section class="leaderboard-panel">
+      <div>
+        <h2>Submit A High Score</h2>
+        <p>Pick your game, enter your arcade handle, and lock in your latest run.</p>
+        <form id="score-form" class="form-grid">
+          <label>
+            Game
+            <select id="game" name="game" required>
+              %{ for game_name, game in games ~}
+              <option value="${game_name}">${game.title}</option>
+              %{ endfor ~}
+            </select>
+          </label>
+          <label>
+            Player ID
+            <input id="playerId" name="playerId" maxlength="50" placeholder="player-01" required>
+          </label>
+          <label>
+            Player Name
+            <input id="playerName" name="playerName" maxlength="80" placeholder="Alex" required>
+          </label>
+          <label>
+            Score
+            <input id="score" name="score" type="number" min="0" step="1" placeholder="12345" required>
+          </label>
+          <button type="submit">Submit Score</button>
+        </form>
+        <p id="status" class="status" aria-live="polite"></p>
+      </div>
+
+      <div>
+        <div class="panel-header">
+          <div>
+            <h2>Top Scores</h2>
+            <p id="top-copy">Live rankings for the selected game.</p>
+          </div>
+          <button id="refresh" type="button">Refresh</button>
+        </div>
+        <ol id="score-list" class="score-list"></ol>
+      </div>
+    </section>
   </div>
+
+  <script>
+    const gameSelect = document.getElementById("game");
+    const form = document.getElementById("score-form");
+    const status = document.getElementById("status");
+    const scoreList = document.getElementById("score-list");
+    const refreshButton = document.getElementById("refresh");
+    const topCopy = document.getElementById("top-copy");
+
+    async function loadScores() {
+      const game = gameSelect.value;
+      topCopy.textContent = `Top scores for $${game}.`;
+      scoreList.innerHTML = "<li class=\"meta\">Loading scores...</li>";
+
+      try {
+        const response = await fetch(`/api/scores/$${encodeURIComponent(game)}/top/10`);
+        if (!response.ok) {
+          throw new Error(`Request failed with $${response.status}`);
+        }
+
+        const scores = await response.json();
+        if (!Array.isArray(scores) || scores.length === 0) {
+          scoreList.innerHTML = "<li class=\"meta\">No scores yet. Be the first to post one.</li>";
+          return;
+        }
+
+        scoreList.innerHTML = scores.map((entry, index) => {
+          const safeName = escapeHtml(entry.playerName ?? "Unknown player");
+          const safeId = escapeHtml(entry.playerId ?? "unknown");
+          const safeScore = Number(entry.score ?? 0).toLocaleString();
+          return `
+            <li class="score-item">
+              <span class="rank">#$${index + 1}</span>
+              <div>
+                <div class="player">$${safeName}</div>
+                <div class="meta">$${safeId}</div>
+              </div>
+              <div class="score">$${safeScore}</div>
+            </li>`;
+        }).join("");
+      } catch (error) {
+        scoreList.innerHTML = `<li class="meta">Could not load scores right now.</li>`;
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      status.className = "status";
+      status.textContent = "Submitting score...";
+
+      const payload = {
+        game: gameSelect.value,
+        playerId: document.getElementById("playerId").value.trim(),
+        playerName: document.getElementById("playerName").value.trim(),
+        score: Number(document.getElementById("score").value)
+      };
+
+      try {
+        const response = await fetch("/api/scores", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with $${response.status}`);
+        }
+
+        status.className = "status success";
+        status.textContent = "Score submitted. Nice run.";
+        document.getElementById("score").value = "";
+        await loadScores();
+      } catch (error) {
+        status.className = "status error";
+        status.textContent = "Could not submit the score. Check that the leaderboard API is running.";
+      }
+    });
+
+    gameSelect.addEventListener("change", loadScores);
+    refreshButton.addEventListener("click", loadScores);
+    loadScores();
+  </script>
 </body>
 </html>
+
