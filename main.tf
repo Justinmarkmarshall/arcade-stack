@@ -89,9 +89,9 @@ module "games" {
 
   for_each = var.games
 
-  name          = each.key
-  image         = each.value.image
-  network_name  = docker_network.arcade_network.name
+  name         = each.key
+  image        = each.value.image
+  network_name = docker_network.arcade_network.name
 }
 
 resource "docker_container" "leaderboard_db" {
