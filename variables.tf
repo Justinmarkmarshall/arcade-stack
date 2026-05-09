@@ -99,7 +99,6 @@ variable "games" {
   description = "Game container definitions"
   type = map(object({
     image         = string
-    external_port = number
     internal_port = number
     title         = string
     description   = string

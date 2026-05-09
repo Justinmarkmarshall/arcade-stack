@@ -7,5 +7,5 @@ output "image_name" {
 }
 
 output "url" {
-  value = "http://localhost:${var.external_port}"
+  value = "/games/${var.name}"
 }

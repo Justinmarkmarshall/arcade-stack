@@ -30,11 +30,14 @@ locals {
   launcher_html = templatefile("${path.module}/templates/launcher.html.tftpl", {
     games          = var.games
     portainer_port = var.portainer_port
+    launcher_port  = var.launcher_port
   })
 
   launcher_nginx_conf = templatefile("${path.module}/templates/launcher-nginx.conf.tftpl", {
-    api_upstream = var.leaderboard_api_name
-    api_port     = var.leaderboard_api_internal_port
+    api_upstream  = var.leaderboard_api_name
+    api_port      = var.leaderboard_api_internal_port
+    games         = var.games
+    launcher_port = var.launcher_port
   })
 
   healthcheck_defaults = {
@@ -88,7 +91,6 @@ module "games" {
 
   name          = each.key
   image         = each.value.image
-  external_port = each.value.external_port
   internal_port = each.value.internal_port
   network_name  = docker_network.arcade_network.name
 }
@@ -137,11 +139,6 @@ resource "docker_container" "leaderboard_api" {
     "ASPNETCORE_URLS=http://+:${var.leaderboard_api_internal_port}",
     "ConnectionStrings__LeaderboardDb=Host=${var.leaderboard_db_name};Port=5432;Database=${var.leaderboard_db_database};Username=${var.leaderboard_db_username};Password=${var.leaderboard_db_password}"
   ]
-
-  ports {
-    internal = var.leaderboard_api_internal_port
-    external = var.leaderboard_api_port
-  }
 
   networks_advanced {
     name = docker_network.arcade_network.name
