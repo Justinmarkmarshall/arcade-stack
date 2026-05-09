@@ -6,6 +6,11 @@ on:
       - '**.tf'
       - '**.tfvars'
       - '.github/workflows/terraform-validate.yml'
+  push:
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+      - '.github/workflows/terraform-validate.yml'      
 
 jobs:
   validate:
