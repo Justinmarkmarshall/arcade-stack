@@ -10,7 +10,7 @@ variable "launcher_name" {
 
 variable "launcher_port" {
   type    = number
-  default = 8080
+  default = 80
 }
 
 variable "launcher_image" {
@@ -46,11 +46,6 @@ variable "leaderboard_api_name" {
 variable "leaderboard_api_image" {
   type    = string
   default = "ghcr.io/justinmarkmarshall/arcade-leaderboard:latest"
-}
-
-variable "leaderboard_api_port" {
-  type    = number
-  default = 8081
 }
 
 variable "leaderboard_api_internal_port" {

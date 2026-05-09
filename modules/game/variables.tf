@@ -10,11 +10,6 @@ variable "image" {
   type        = string
 }
 
-variable "internal_port" {
-  description = "Container port"
-  type        = number
-}
-
 variable "restart_policy" {
   description = "Restart policy for the container"
   type        = string

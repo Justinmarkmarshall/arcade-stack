@@ -91,7 +91,6 @@ module "games" {
 
   name          = each.key
   image         = each.value.image
-  internal_port = each.value.internal_port
   network_name  = docker_network.arcade_network.name
 }
 
